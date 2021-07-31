@@ -30,7 +30,8 @@ void setup() {
   Serial.println("initialization done.");
 
 
-
+  strcat(directory_buffer, "datalog");
+ 
  
   for (int i = 0; i < 4; i++)
   {
@@ -49,14 +50,23 @@ void setup() {
 
   }
 
+  strcat(directory_buffer, "ac");
   Serial.println(directory_buffer);
   Serial.println(filename_buffer);
   
   strcpy(filename_buffer, directory_buffer);
   strcat(filename_buffer, individual_log_appendage);
 
+  Serial.print("Directiry: ");
   Serial.println(directory_buffer);
+  Serial.print("Full filename: ");
   Serial.println(filename_buffer);
+
+  Serial.print("strlen of dir: ");
+  Serial.println(strlen(directory_buffer));
+  Serial.print("strlen of filename: ");
+  Serial.println(strlen(filename_buffer));
+  delay(50);
 
   if(SD.mkdir(directory_buffer)){
     Serial.println("Folder creation succesful");
@@ -64,16 +74,8 @@ void setup() {
     Serial.println("Folder creation failed");
   }
 
-  Serial.print("strlen of dir: ");
-  Serial.println(strlen(directory_buffer));
-  Serial.print("strlen of filename: ");
-  Serial.println(strlen(filename_buffer));
-
 
   myFile = SD.open(filename_buffer, FILE_WRITE);
-
-
-  Serial.println("");
   
 
   if (myFile) 
