@@ -5,14 +5,14 @@
 
 File myFile;
 long random_number;
-char directory_buffer[32];
-char filename_buffer[64];
-char rng_buffer[16];
-char individual_log_appendage[] = "/datalog.csv";
+char filename_buffer[16];
+char rng_buffer[8];
+char individual_log_appendage[] = ".csv";
 
 
 void setup() {
   // Open serial communications and wait for port to open:
+  
   randomSeed(analogRead(A0));
   Serial.begin(115200);
   while (!Serial) 
@@ -22,6 +22,7 @@ void setup() {
 
   Serial.print("Initializing SD card...");
   pinMode(9, OUTPUT);
+  delay(1000);
   if (!SD.begin(9)) 
   {
     Serial.println("initialization failed!");
@@ -30,13 +31,13 @@ void setup() {
   Serial.println("initialization done.");
 
 
-  strcat(directory_buffer, "datalog");
+  //strcat(filename_buffer, "log");
  
- 
-  for (int i = 0; i < 4; i++)
+
+  for (int i = 0; i < 3; i++)
   {
 
-    random_number = random(1000);
+    random_number = random(10,100);
     Serial.print("random number: ");
     Serial.println(random_number);
 
@@ -44,36 +45,27 @@ void setup() {
     Serial.print("strlen of rng buffer: ");
     Serial.println(strlen(rng_buffer));
 
-    strcat(directory_buffer, rng_buffer);
-    Serial.print("strlen of dir buffer: ");
-    Serial.println(strlen(directory_buffer));
+    strcat(filename_buffer, rng_buffer);
+    Serial.print("strlen of filenamebuffer: ");
+    Serial.println(strlen(filename_buffer));
 
   }
 
-  strcat(directory_buffer, "ac");
-  Serial.println(directory_buffer);
-  Serial.println(filename_buffer);
-  
-  strcpy(filename_buffer, directory_buffer);
   strcat(filename_buffer, individual_log_appendage);
 
-  Serial.print("Directiry: ");
-  Serial.println(directory_buffer);
   Serial.print("Full filename: ");
   Serial.println(filename_buffer);
 
-  Serial.print("strlen of dir: ");
-  Serial.println(strlen(directory_buffer));
   Serial.print("strlen of filename: ");
   Serial.println(strlen(filename_buffer));
-  delay(50);
-
+  delay(1000);
+/*
   if(SD.mkdir(directory_buffer)){
     Serial.println("Folder creation succesful");
   }else{
     Serial.println("Folder creation failed");
   }
-
+*/
 
   myFile = SD.open(filename_buffer, FILE_WRITE);
   
@@ -88,7 +80,8 @@ void setup() {
   }else 
   {
     // if the file didn't open, print an error:
-    Serial.println("error opening test.txt");
+    Serial.print("error opening ");
+    Serial.println(filename_buffer);
   }
 }
 
